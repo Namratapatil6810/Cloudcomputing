@@ -2,38 +2,63 @@
 <html>
 <head>
     <title>Sales Stars & Power Buyers</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 80%;
+            margin-bottom: 40px;
+        }
+        th, td {
+            border: 1px solid #444;
+            padding: 10px;
+            text-align: left;
+        }
+        h2 {
+            margin-top: 40px;
+        }
+    </style>
 </head>
 <body>
-    <h1>Top 5 Products by Revenue</h1>
-    <table border="1">
-        <tr>
-            {% for col in products.columns %}
-                <th>{{ col }}</th>
-            {% endfor %}
-        </tr>
-        {% for row in products.values %}
-            <tr>
-                {% for val in row %}
-                    <td>{{ val }}</td>
-                {% endfor %}
-            </tr>
-        {% endfor %}
-    </table>
 
-    <h1>High-Value Repeat Customers</h1>
-    <table border="1">
+    <h2>Top 5 Products by Revenue</h2>
+    {% if products %}
+    <table>
         <tr>
-            {% for col in customers.columns %}
+            {% for col in products[0].keys() %}
                 <th>{{ col }}</th>
             {% endfor %}
         </tr>
-        {% for row in customers.values %}
+        {% for row in products %}
             <tr>
-                {% for val in row %}
+                {% for val in row.values() %}
                     <td>{{ val }}</td>
                 {% endfor %}
             </tr>
         {% endfor %}
     </table>
+    {% else %}
+        <p>No product data found.</p>
+    {% endif %}
+
+    <h2>High-Value Repeat Customers</h2>
+    {% if customers %}
+    <table>
+        <tr>
+            {% for col in customers[0].keys() %}
+                <th>{{ col }}</th>
+            {% endfor %}
+        </tr>
+        {% for row in customers %}
+            <tr>
+                {% for val in row.values() %}
+                    <td>{{ val }}</td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+        <p>No customer data found.</p>
+    {% endif %}
+
 </body>
 </html>
