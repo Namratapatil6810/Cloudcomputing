@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sales Stars & Power Buyers</title>
+</head>
+<body>
+    <h1>Top 5 Products by Revenue</h1>
+    <table border="1">
+        <tr>
+            {% for col in products.columns %}
+                <th>{{ col }}</th>
+            {% endfor %}
+        </tr>
+        {% for row in products.values %}
+            <tr>
+                {% for val in row %}
+                    <td>{{ val }}</td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+    </table>
+
+    <h1>High-Value Repeat Customers</h1>
+    <table border="1">
+        <tr>
+            {% for col in customers.columns %}
+                <th>{{ col }}</th>
+            {% endfor %}
+        </tr>
+        {% for row in customers.values %}
+            <tr>
+                {% for val in row %}
+                    <td>{{ val }}</td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
