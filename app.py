@@ -1,6 +1,5 @@
 from flask import Flask, render_template
 from google.cloud import bigquery
-import pandas as pd
 
 app = Flask(__name__)
 client = bigquery.Client()
@@ -55,11 +54,19 @@ HAVING
   AND AVG(co.order_total) > 100;
 """
 
+def query_to_dict_list(query):
+    """Executes a BigQuery query and returns results as a list of dicts"""
+    query_job = client.query(query)
+    result = query_job.result()
+    return [dict(row.items()) for row in result]
+
 @app.route("/")
 def index():
-    result_1 = client.query(QUERY_1).to_dataframe()
-    result_2 = client.query(QUERY_2).to_dataframe()
-    return render_template("index.html", products=result_1, customers=result_2)
+    product_data = query_to_dict_list(QUERY_1)
+    customer_data = query_to_dict_list(QUERY_2)
+
+    return render_template("index.html", products=product_data, customers=customer_data)
 
 if __name__ == "__main__":
     app.run(debug=True)
+
