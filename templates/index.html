@@ -62,3 +62,61 @@
 
 </body>
 </html>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Top Products & VIP Customers</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        h2 { margin-top: 40px; }
+        table { border-collapse: collapse; width: 80%; margin-bottom: 40px; }
+        th, td { border: 1px solid #ccc; padding: 10px; text-align: left; }
+        th { background-color: #f2f2f2; }
+    </style>
+</head>
+<body>
+
+    <h1>Sales Dashboard</h1>
+
+    <h2>Top 5 Products by Revenue (Jan–Sep 2023)</h2>
+    {% if products %}
+    <table>
+        <tr>
+            {% for col in products[0].keys() %}
+                <th>{{ col }}</th>
+            {% endfor %}
+        </tr>
+        {% for row in products %}
+            <tr>
+                {% for val in row.values() %}
+                    <td>{{ val }}</td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+        <p>No product data found.</p>
+    {% endif %}
+
+    <h2>High-Value Repeat Customers</h2>
+    {% if customers %}
+    <table>
+        <tr>
+            {% for col in customers[0].keys() %}
+                <th>{{ col }}</th>
+            {% endfor %}
+        </tr>
+        {% for row in customers %}
+            <tr>
+                {% for val in row.values() %}
+                    <td>{{ val }}</td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+        <p>No customer data found.</p>
+    {% endif %}
+
+</body>
+</html>
