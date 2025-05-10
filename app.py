@@ -54,6 +54,7 @@ HAVING
   COUNT(co.order_id) > 3 
   AND AVG(co.order_total) > 100
 LIMIT 10;
+"""
 def run_query(query):
     job = client.query(query)
     results = job.result()
