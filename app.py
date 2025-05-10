@@ -4,7 +4,7 @@ from google.cloud import bigquery
 app = Flask(__name__)
 client = bigquery.Client()
 
-# Query 1: Top 5 Products
+# Query 1: Top 5 Products by Revenue
 QUERY_1 = """
 SELECT 
   p.name AS product_name,
@@ -16,7 +16,7 @@ JOIN
   `namratapatil.thelook.products` AS p
   ON oi.product_id = p.id
 WHERE 
-  DATE(oi.created_at) BETWEEN '2024-01-01' AND '2024-03-31'
+  DATE(oi.created_at) BETWEEN '2023-01-01' AND '2023-09-30'
 GROUP BY 
   p.name, p.category
 ORDER BY 
@@ -24,7 +24,7 @@ ORDER BY
 LIMIT 5;
 """
 
-# Query 2: VIP Customers
+# Query 2: High-Value Repeat Customers
 QUERY_2 = """
 WITH customer_orders AS (
   SELECT 
@@ -54,19 +54,16 @@ HAVING
   AND AVG(co.order_total) > 100;
 """
 
-def query_to_dict_list(query):
-    """Executes a BigQuery query and returns results as a list of dicts"""
-    query_job = client.query(query)
-    result = query_job.result()
-    return [dict(row.items()) for row in result]
+def run_query(query):
+    job = client.query(query)
+    results = job.result()
+    return [dict(row.items()) for row in results]
 
 @app.route("/")
 def index():
-    product_data = query_to_dict_list(QUERY_1)
-    customer_data = query_to_dict_list(QUERY_2)
-
-    return render_template("index.html", products=product_data, customers=customer_data)
+    products = run_query(QUERY_1)
+    customers = run_query(QUERY_2)
+    return render_template("index.html", products=products, customers=customers)
 
 if __name__ == "__main__":
-    app.run(debug=True)
-
+    app.run(host='0.0.0.0',port=8080,debug=True)
